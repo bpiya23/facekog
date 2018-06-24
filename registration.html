@@ -36,6 +36,11 @@
     <script>
         $(function() {
             $("#accordion").accordion();
+
+            $("#Fname").keypress(function() {
+                //alert("hi");
+                $("#fface").html($("#Fname").val());
+            });
         });
 
 
@@ -98,12 +103,6 @@
             evt.preventDefault();
             evt.dataTransfer.dropEffect = 'copy';
         }
-
-        document.getElementById("Fname").addEventListener("keypress", myFunction);
-
-        function myFunction() {
-            document.getElementById("left").innerHTML = document.getElementById("Fname");
-        }
     </script>
 </head>
 
@@ -129,7 +128,7 @@
         <div>
 
             <div id="wrapper">
-                <label id="left" for="face1"><b>First Face:</b></label><br/>
+                <label id="left" for="face1"><b><div id="fface">First Face:</div></b></label><br/>
                 <div id="right"><img src="" width="100px" height="100px"></div>
             </div>
             <br/><br/>

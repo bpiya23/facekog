@@ -37,11 +37,115 @@
         $(function() {
             $("#accordion").accordion();
 
-            $("#Fname").keypress(function() {
+            $("#fname").keyup(function() {
                 //alert("hi");
-                $("#fface").html($("#Fname").val());
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#fname").val() + " " + $("#lname").val();
+                //alert(v);
+                $("#fface").html(v);
+
             });
+
+            $("#lname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#fname").val() + " " + $("#lname").val();
+                //alert(v);
+                $("#fface").html(v);
+
+            });
+
+            $("#sname").keyup(function() {
+                //alert("hi");
+                $("#sface").html($("#sname").val());
+
+                var v = $("#sname").val() + " " + $("#slname").val();
+                //alert(v);
+                $("#sface").html(v);
+            });
+
+            $("#slname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#sname").val() + " " + $("#slname").val();
+                //alert(v);
+                $("#sface").html(v);
+
+            });
+
+
+
+            $("#thname").keypress(function() {
+                //alert("hi");
+                $("#thface").html($("#thname").val());
+
+                var v = $("#thname").val() + " " + $("#tlname").val();
+                //alert(v);
+                $("#thface").html(v);
+            });
+
+            $("#tlname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#thname").val() + " " + $("#tlname").val();
+                //alert(v);
+                $("#thface").html(v);
+
+            });
+
+            $("#uploadfile").click(function() {
+                //get the name of the image file
+                //alert("hi!");
+                var a = $("#filesToUpload").val();
+                //alert(a);
+                //if the extension of the file is other than jpeg or png, throw error
+                var n = a.lastIndexOf("\\");
+                //alert(n);
+                var s = a.substring(n + 1, a.length);
+                alert(s);
+                var r = s.indexOf(".jpeg");
+                var p = s.indexOf(".png");
+                if (r == -1 && p == -1) {
+
+                    $("#displayerror").html("invalid file extension").show().css("color", "red");
+                }
+
+                //$("#displayerror").html("invalid file extension");
+
+                //convert image into base64 encoded format.
+
+
+                // frame the data in json format. 
+                var data = '{' +
+                    '"name":"deckpic.jpeg" ,' +
+                    '"data":"<<base64 encoded string>>"' +
+                    '}';
+
+                //frame the ajax request
+                $.ajax({
+                    url: "ajax_php_file.php", // Url to which the request is send
+                    type: "POST", // Type of request to be send, called as method
+                    data: data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                    contentType: false, // The content type used when sending data to the server.
+                    cache: false, // To unable request pages to be cached
+                    processData: false, // To send DOMDocument or non processed data file it is set to false
+                    success: function(data) // A function to be called if request succeeds
+                        {
+                            alert(data);
+                        }
+                });
+
+            });
+
         });
+
+
+
+
 
 
         // start of uploading picture module
@@ -113,12 +217,13 @@
         <div style="display: block; height: 200px;">
             <form enctype="multipart/form-data" method="post" action="upload.php">
                 <div class="row">
+                    <div id="displayerror"></div>
                     <label for="fileToUpload">Select Files to Upload</label><br />
                     <input type="file" name="filesToUpload[]" id="filesToUpload" multiple="multiple" />
                     <output id="filesInfo"></output>
                 </div>
                 <div class="row">
-                    <input type="submit" value="Upload" />
+                    <input type="button" value="Upload" id="uploadfile" />
                 </div>
             </form>
             <div id="dropTarget" style="width: 100%; height: 100px; border: 1px #ccc solid; padding: 10px;">Drop some files here</div>
@@ -134,7 +239,7 @@
             <br/><br/>
             <div id="namediv">
                 <label for="firstname"><b>First Name:</b><span style='color:red'>*</span></label><br/>
-                <input type='text' name='Fname' id='Fname' />
+                <input type='text' name='fname' id='fname' />
 
             </div>
             <div id="namediv">
@@ -143,7 +248,7 @@
             </div>
             <div id="namediv">
                 <label for="last name"><b>Last Name:</b><span style='color:red'>*</span></strong><br/>
-                <input type='text' name='Lname' id='Lname'/>
+                <input type='text' name='lname' id='lname'/>
             </div>
                 
                 <div><br/><br/><br/>
@@ -199,13 +304,13 @@
 
         <div id="wrapper">
 
-            <label id="left" for="face"><b>Second Face:</b></label><br/>
+            <label id="left" for="face"><b><div id="sface">Second Face:</div></b></label><br/>
             <div id="right"><img src="" width="100px" height="100px"></div>
         </div>
         <br/><br/>
         <div id="namediv">
             <label for="firstname"><b>First Name:</b><span style='color:red'>*</span></label><br/>
-            <input type='text' name='Fname' id='Fname' />
+            <input type='text' name='sname' id='sname' />
 
         </div>
         <div id="namediv">
@@ -214,7 +319,7 @@
         </div>
         <div id="namediv">
             <label for="last name"><b>Last Name:</b><span style='color:red'>*</span></strong><br/>
-                <input type='text' name='Lname' id='Lname'/>
+                <input type='text' name='slname' id='slname'/>
             </div>
                 
 
@@ -270,13 +375,13 @@
 
     <div id="wrapper">
 
-        <label id="left" for="face"><b>Third Face:</b></label><br/>
+        <label id="left" for="face"><b><div id="thface">Third Face:</div></b></label><br/>
         <div id="right"><img src="" width="100px" height="100px"></div>
     </div>
     <br/><br/>
     <div id="namediv">
         <label for="firstname"><b>First Name:</b><span style='color:red'>*</span></label><br/>
-        <input type='text' name='Fname' id='Fname' />
+        <input type='text' name='thname' id='thname' />
 
     </div>
     <div id="namediv">
@@ -285,7 +390,7 @@
     </div>
     <div id="namediv">
         <label for="last name"><b>Last Name:</b><span style='color:red'>*</span></strong><br/>
-                <input type='text' name='Lname' id='Lname'/>
+                <input type='text' name='tlname' id='tlname'/>
             </div>
 
     <div><br/><br/><br/>
@@ -348,26 +453,8 @@
 
 
 
-    <h3>Section 3</h3>
-    <div>
-        <p>
-            Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
-        </p>
-        <ul>
-            <li>List item one</li>
-            <li>List item two</li>
-            <li>List item three</li>
-        </ul>
-    </div>
-    <h3>Section 4</h3>
-    <div>
-        <p>
-            Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est.
-        </p>
-        <p>
-            Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-        </p>
-    </div>
+
+
     </div>
 
     <script type="text/javascript">

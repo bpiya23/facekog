@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>jQuery UI Accordion - Default functionality</title>
+    <title>FaceKog-Registration</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https:/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -106,7 +106,7 @@
                 var n = a.lastIndexOf("\\");
                 //alert(n);
                 var s = a.substring(n + 1, a.length);
-                alert(s);
+                //alert(s);
                 var r = s.indexOf(".jpeg");
                 var p = s.indexOf(".png");
                 if (r == -1 && p == -1) {
@@ -117,27 +117,40 @@
                 //$("#displayerror").html("invalid file extension");
 
                 //convert image into base64 encoded format.
+                var file = document.getElementById('filesToUpload').files[0];
+                var reader = new FileReader();
+                var base64data = "";
+                reader.onloadend = function() {
+
+                    base64data = reader.result;
+                    console.log(base64data);
+
+                    // frame the data in json format. 
+                    var data = '{' +
+                        "Name:" +
+                        s + ", " +
+                        "Data:" +
+                        base64data + '}';
+                    console.log(data);
+                    //frame the ajax request
+                    $.ajax({
+                        url: "https://google.com", // Url to which the request is send
+                        type: "POST", // Type of request to be send, called as method
+                        data: data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                        contentType: "application/json", // The content type used when sending data to the server.
+                        cache: false, // To unable request pages to be cached
+                        processData: false, // To send DOMDocument or non processed data file it is set to false
+                        success: function(data) // A function to be called if request succeeds
+                            {
+                                alert(data);
+                            }
+                    });
+
+                }
+
+                reader.readAsDataURL(file);
 
 
-                // frame the data in json format. 
-                var data = '{' +
-                    '"name":"deckpic.jpeg" ,' +
-                    '"data":"<<base64 encoded string>>"' +
-                    '}';
-
-                //frame the ajax request
-                $.ajax({
-                    url: "ajax_php_file.php", // Url to which the request is send
-                    type: "POST", // Type of request to be send, called as method
-                    data: data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-                    contentType: false, // The content type used when sending data to the server.
-                    cache: false, // To unable request pages to be cached
-                    processData: false, // To send DOMDocument or non processed data file it is set to false
-                    success: function(data) // A function to be called if request succeeds
-                        {
-                            alert(data);
-                        }
-                });
 
             });
 
@@ -215,11 +228,11 @@
     <div id="accordion">
         <h3>Upload Picture</h3>
         <div style="display: block; height: 200px;">
-            <form enctype="multipart/form-data" method="post" action="upload.php">
+            <form id="uploadFiles" enctype="multipart/form-data" method="post" action="upload.php">
                 <div class="row">
                     <div id="displayerror"></div>
                     <label for="fileToUpload">Select Files to Upload</label><br />
-                    <input type="file" name="filesToUpload[]" id="filesToUpload" multiple="multiple" />
+                    <input type="file" name="filesToUpload" id="filesToUpload" accept="image/png, image/jpeg" />
                     <output id="filesInfo"></output>
                 </div>
                 <div class="row">

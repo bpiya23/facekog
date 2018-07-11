@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FaceKog-Registration</title>
+   <!--   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https:/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+    <style>
+        #namediv {
+            border: none;
+            float: left;
+        }
+        
+        input[name="Fname"],
+        input[name="Mname"],
+        input[name="Lname"] {
+            float: left;
+        }
+        
+        #wrapper {
+            display: flex;
+        }
+        
+        #left {
+            flex: 0 0 65%;
+        }
+        
+        #right {
+            flex: 1;
+        }
+    </style>
+    <script>
+        $(function() {
+            $("#accordion").accordion();
+            alert("hi");
+            $("#fname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#fname").val() + " " + $("#lname").val();
+                //alert(v);
+                $("#fface").html(v);
+
+            });
+
+            $("#lname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#fname").val() + " " + $("#lname").val();
+                //alert(v);
+                $("#fface").html(v);
+
+            });
+
+            $("#sname").keyup(function() {
+                //alert("hi");
+                $("#sface").html($("#sname").val());
+
+                var v = $("#sname").val() + " " + $("#slname").val();
+                //alert(v);
+                $("#sface").html(v);
+            });
+
+            $("#slname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#sname").val() + " " + $("#slname").val();
+                //alert(v);
+                $("#sface").html(v);
+
+            });
+
+
+
+            $("#thname").keypress(function() {
+                //alert("hi");
+                $("#thface").html($("#thname").val());
+
+                var v = $("#thname").val() + " " + $("#tlname").val();
+                //alert(v);
+                $("#thface").html(v);
+            });
+
+            $("#tlname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#thname").val() + " " + $("#tlname").val();
+                //alert(v);
+                $("#thface").html(v);
+
+            });
+
+            $("#uploadfile").click(function() {
+                //get the name of the image file
+                //alert("hi!");
+                var a = $("#filesToUpload").val();
+                //alert(a);
+                //if the extension of the file is other than jpeg or png, throw error
+                var n = a.lastIndexOf("\\");
+                //alert(n);
+                var s = a.substring(n + 1, a.length);
+                //alert(s);
+                var r = s.indexOf(".jpeg");
+                var p = s.indexOf(".png");
+                if (r == -1 && p == -1) {
+
+                    $("#displayerror").html("invalid file extension").show().css("color", "red");
+                }
+
+                //$("#displayerror").html("invalid file extension");
+
+                //convert image into base64 encoded format.
+                var file = document.getElementById('filesToUpload').files[0];
+                var reader = new FileReader();
+                var base64data = "";
+                reader.onloadend = function() {
+
+                    base64data = reader.result;
+                    console.log(base64data);
+
+                    // frame the data in json format. 
+                    var data = '{' +
+                        "Name:" +
+                        s + ", " +
+                        "Data:" +
+                        base64data + '}';
+                    console.log(data);
+                    //frame the ajax request
+                    $.ajax({
+                        url: "https://google.com", // Url to which the request is send
+                        type: "POST", // Type of request to be send, called as method
+                        data: data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                        contentType: "application/json", // The content type used when sending data to the server.
+                        cache: false, // To unable request pages to be cached
+                        processData: false, // To send DOMDocument or non processed data file it is set to false
+                        success: function(data) // A function to be called if request succeeds
+                            {
+                                alert(data);
+                            }
+                    });
+
+                }
+
+                reader.readAsDataURL(file);
+
+
+
+            });
+
+        });
+
+
+
+
+
+
+        // start of uploading picture module
+        function fileSelect(evt) {
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                var files = evt.target.files;
+
+                var result = '';
+                var file;
+                for (var i = 0; file = files[i]; i++) {
+                    // if the file is not an image, continue
+                    if (!file.type.match('image.*')) {
+                        continue;
+                    }
+
+                    reader = new FileReader();
+                    reader.onload = (function(tFile) {
+                        return function(evt) {
+                            var div = document.createElement('div');
+                            div.innerHTML = '<img style="width: 190px;height:100px" src="' + evt.target.result + '" />';
+                            document.getElementById('filesInfo').appendChild(div);
+                        };
+                    }(file));
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                alert('The File APIs are not fully supported in this browser.');
+            }
+        }
+
+        function fileSelect1(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                var files = evt.dataTransfer.files;
+
+                var result = '';
+                var file;
+                for (var i = 0; file = files[i]; i++) {
+                    result += '<li>' + file.name + ' ' + file.size + ' bytes</li>';
+                    reader = new FileReader();
+                    reader.onload = (function(tFile) {
+                        return function(evt) {
+                            var div = document.createElement('div');
+                            div.innerHTML = '<img style="width: 190px;height:100px" src="' + evt.target.result + '" />';
+                            document.getElementById('filesInfo').appendChild(div);
+                        };
+                    }(file));
+                    reader.readAsDataURL(file);
+                }
+                //document.getElementById('filesInfo').innerHTML = '<ul>' + result + '</ul>';
+            } else {
+                alert('The File APIs are not fully supported in this browser.');
+            }
+        }
+
+        function dragOver(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = 'copy';
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="accordion">
+        <h3>Upload Picture</h3>
+        <div style="display: block; height: 200px;">
+            <form id="uploadFiles" enctype="multipart/form-data" method="post" action="upload.php">
+                <div class="row">
+                    <div id="displayerror"></div>
+                    <label for="fileToUpload">Select Files to Upload</label><br />
+                    <input type="file" name="filesToUpload" id="filesToUpload" accept="image/png, image/jpeg" />
+                    <output id="filesInfo"></output>
+                </div>
+                <div class="row">
+                    <input type="button" value="Upload" id="uploadfile" />
+                </div>
+            </form>
+            <div id="dropTarget" style="width: 100%; height: 100px; border: 1px #ccc solid; padding: 10px;">Drop some files here</div>
+
+        </div>
+        <h3>Faces</h3>
+        <div>
+
+            <div id="wrapper">
+                <label id="left" for="face1"><b><div id="fface">First Face:</div></b></label><br/>
+                <div id="right"><img src="" width="100px" height="100px"></div>
+            </div>
+            <br/><br/>
+            <div id="namediv">
+                <label for="firstname"><b>First Name:</b><span style='color:red'>*</span></label><br/>
+                <input type='text' name='fname' id='fname' />
+
+            </div>
+            <div id="namediv">
+                <label for="Middle Name"><b>Middle Name:</b><span style='color:red',>*</span></label><br/>
+                <input type='text' name='Mname' id='Mname' />
+            </div>
+            <div id="namediv">
+                <label for="last name"><b>Last Name:</b><span style='color:red'>*</span></strong><br/>
+                <input type='text' name='lname' id='lname'/>
+            </div>
+                
+                <div><br/><br/><br/>
+            <div id="namediv">
+                <label for="StreetAddress1"><b>Street Address 1:</b><span style='color:red'>*</span></label><br/>
+                <input type='text' name='StreetAddress1' id='StreetAddress1' />
+
+            </div>
+            <div id="namediv">
+                <label for="StreetAddress2"><b>Street Address 2:</b><span style='color:red'>*</span></label><br/>
+                <input type='text' name='StreetAddress2' id='StreetAddress2' />
+            </div>
+
+        </div>
+        <div><br/><br/><br/>
+
+            <div id="namediv">
+                <label for="zipcode"><b>Zip Code:</b><span style='color:red'>*</span></label><br/>
+                <input type='text' name='zip' id='zip' />
+                <br/>
+                <span id="validateZip " class="validator "> </span>
+            </div>
+            <div id="namediv">
+                <label for="city"><b>City:</b></label><br/>
+                <input type='text' name='city' id='city' />
+            </div>
+            <div id="namediv">
+                <label for="state"><b>State:</b></label><br/>
+                <input type='text' name='state' id='state' />
+            </div>
+
+        </div>
+
+        <div><br/><br/><br/>
+            <div id="namediv">
+                <label for="telephone"><b>Telephone:</b><span style='color:red'>*</span></label><br/>
+                <input type="tel " name="phone " id="phone " placeholder="(###) ###-####" pattern="\(\d{3}\)+\d{3}-\d{4}" required/>
+                <br/>
+                <span id="validateZip " class="validator "> </span>
+            </div>
+            <div id="namediv">
+                <label for="email"><b>Email:</b></label><br/>
+                <input type="email " name="email " id="email " placeholder="name@domain.com" required/>
+            </div>
+
+        </div>
+
+        <br/>
+        <br/>
+
+        <br/>
+        <br/>
+
+        <div id="wrapper">
+
+            <label id="left" for="face"><b><div id="sface">Second Face:</div></b></label><br/>
+            <div id="right"><img src="" width="100px" height="100px"></div>
+        </div>
+        <br/><br/>
+        <div id="namediv">
+            <label for="firstname"><b>First Name:</b><span style='color:red'>*</span></label><br/>
+            <input type='text' name='sname' id='sname' />
+
+        </div>
+        <div id="namediv">
+            <label for="Middle Name"><b>Middle Name:</b><span style='color:red',>*</span></label><br/>
+            <input type='text' name='Mname' id='Mname' />
+        </div>
+        <div id="namediv">
+            <label for="last name"><b>Last Name:</b><span style='color:red'>*</span></strong><br/>
+                <input type='text' name='slname' id='slname'/>
+            </div>
+                
+
+ <div><br/><br/><br/>
+            <div id="namediv">
+                <label for="StreetAddress1"><b>Street Address 1:</b><span style='color:red'>*</span></label><br/>
+            <input type='text' name='StreetAddress1' id='StreetAddress1' />
+
+        </div>
+        <div id="namediv">
+            <label for="StreetAddress2"><b>Street Address 2:</b><span style='color:red'>*</span></label><br/>
+            <input type='text' name='StreetAddress2' id='StreetAddress2' />
+        </div>
+
+    </div>
+    <div><br/><br/><br/>
+
+        <div id="namediv">
+            <label for="zipcode"><b>Zip Code:</b><span style='color:red'>*</span></label><br/>
+            <input type='text' name='zip' id='zip' />
+            <br/>
+            <span id="validateZip " class="validator "> </span>
+        </div>
+        <div id="namediv">
+            <label for="city"><b>City:</b></label><br/>
+            <input type='text' name='city' id='city' />
+        </div>
+        <div id="namediv">
+            <label for="state"><b>State:</b></label><br/>
+            <input type='text' name='state' id='state' />
+        </div>
+
+    </div>
+
+
+    <div><br/><br/><br/>
+        <div id="namediv">
+            <label for="telephone"><b>Telephone:</b><span style='color:red'>*</span></label><br/>
+            <input type="tel " name="phone " id="phone " placeholder="(###) ###-####" pattern="\(\d{3}\)+\d{3}-\d{4}" required/>
+            <br/>
+            <span id="validateZip " class="validator "> </span>
+        </div>
+        <div id="namediv">
+            <label for="email"><b>Email:</b></label><br/>
+            <input type="email " name="email " id="email " placeholder="name@domain.com" required/>
+        </div>
+
+    </div>
+
+    <br/>
+    <br/>
+    <br/><br/>
+
+    <div id="wrapper">
+
+        <label id="left" for="face"><b><div id="thface">Third Face:</div></b></label><br/>
+        <div id="right"><img src="" width="100px" height="100px"></div>
+    </div>
+    <br/><br/>
+    <div id="namediv">
+        <label for="firstname"><b>First Name:</b><span style='color:red'>*</span></label><br/>
+        <input type='text' name='thname' id='thname' />
+
+    </div>
+    <div id="namediv">
+        <label for="Middle Name"><b>Middle Name:</b><span style='color:red',>*</span></label><br/>
+        <input type='text' name='Mname' id='Mname' />
+    </div>
+    <div id="namediv">
+        <label for="last name"><b>Last Name:</b><span style='color:red'>*</span></strong><br/>
+                <input type='text' name='tlname' id='tlname'/>
+            </div>
+
+    <div><br/><br/><br/>
+        <div id="namediv">
+            <label for="StreetAddress1"><b>Street Address 1:</b><span style='color:red'>*</span></label><br/>
+        <input type='text' name='StreetAddress1' id='StreetAddress1' />
+
+    </div>
+    <div id="namediv">
+        <label for="StreetAddress2"><b>Street Address 2:</b><span style='color:red'>*</span></label><br/>
+        <input type='text' name='StreetAddress2' id='StreetAddress2' />
+    </div>
+
+    </div>
+
+
+    <div><br/><br/><br/>
+
+        <div id="namediv">
+            <label for="zipcode"><b>Zip Code:</b><span style='color:red'>*</span></label><br/>
+            <input type='text' name='zip' id='zip' />
+            <br/>
+            <span id="validateZip " class="validator "> </span>
+        </div>
+        <div id="namediv">
+            <label for="city"><b>City:</b></label><br/>
+            <input type='text' name='city' id='city' />
+        </div>
+        <div id="namediv">
+            <label for="state"><b>State:</b></label><br/>
+            <input type='text' name='state' id='state' />
+        </div>
+
+    </div>
+
+
+    <div><br/><br/><br/>
+        <div id="namediv">
+            <label for="telephone"><b>Telephone:</b><span style='color:red'>*</span></label><br/>
+            <input type="tel " name="phone " id="phone " placeholder="(###) ###-####" pattern="\(\d{3}\)+\d{3}-\d{4}" required/>
+            <br/>
+            <span id="validateZip " class="validator "> </span>
+        </div>
+        <div id="namediv">
+            <label for="email"><b>Email:</b></label><br/>
+            <input type="email " name="email " id="email " placeholder="name@domain.com" required/>
+        </div>
+
+    </div>
+
+    <br/>
+    <br/>
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById('filesToUpload').addEventListener('change', fileSelect, false);
+
+        var dropTarget = document.getElementById('dropTarget');
+        dropTarget.addEventListener('dragover', dragOver, false);
+        dropTarget.addEventListener('drop', fileSelect1, false);
+    </script>
+
+
+</body>
+
+</html>

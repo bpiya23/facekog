@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<!-- author: saurav bhattacharyya -->
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Face recognition Application</title>
+
+    <!--  <script src="jquery-ui/jquery.js" type="text/javascript"></script>
+    <script src="jquery-ui/jquery-ui.js" type="text/javascript"></script>-->
+
+
+    
+    <!--  <link rel="stylesheet" href="jquery-ui/jquery-ui.structure.css" type="text/css" />
+    <link rel="stylesheet" href="jquery-ui/jquery-ui.theme.css" type="text/css" />-->
+    
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https:/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+    <script lang="text/javascript">
+        $(function() {
+
+        });
+
+
+
+
+        function includeHTML() {
+            var z, i, elmnt, file, xhttp;
+            /*loop through a collection of all HTML elements:*/
+            z = document.getElementsByTagName("*");
+            for (i = 0; i < z.length; i++) {
+                elmnt = z[i];
+                /*search for elements with a certain atrribute:*/
+                file = elmnt.getAttribute("w3-include-html");
+                if (file) {
+                    /*make an HTTP request using the attribute value as the file name:*/
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4) {
+                            if (this.status == 200) {
+                                elmnt.innerHTML = this.responseText;
+                            }
+                            if (this.status == 404) {
+                                elmnt.innerHTML = "Page not found.";
+                            }
+                            /*remove the attribute, and call this function once more:*/
+                            elmnt.removeAttribute("w3-include-html");
+                            includeHTML();
+                        }
+                    }
+                    xhttp.open("GET", file, true);
+                    xhttp.send();
+                    /*exit the function:*/
+                    return;
+                }
+            }
+        }
+    </script>
+    <script>
+        $(function() {
+        	 //alert("hi");
+        	$("faces").load(function(){
+        		$("#accordion").accordion();
+               
+        		
+        	});
+            
+            $("#fname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#fname").val() + " " + $("#lname").val();
+                //alert(v);
+                $("#fface").html(v);
+
+            });
+
+            $("#lname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#fname").val() + " " + $("#lname").val();
+                //alert(v);
+                $("#fface").html(v);
+
+            });
+
+            $("#sname").keyup(function() {
+                //alert("hi");
+                $("#sface").html($("#sname").val());
+
+                var v = $("#sname").val() + " " + $("#slname").val();
+                //alert(v);
+                $("#sface").html(v);
+            });
+
+            $("#slname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#sname").val() + " " + $("#slname").val();
+                //alert(v);
+                $("#sface").html(v);
+
+            });
+
+
+
+            $("#thname").keypress(function() {
+                //alert("hi");
+                $("#thface").html($("#thname").val());
+
+                var v = $("#thname").val() + " " + $("#tlname").val();
+                //alert(v);
+                $("#thface").html(v);
+            });
+
+            $("#tlname").keyup(function() {
+                //alert("hi");
+                //$("#fface").html($("#fname").val());
+
+                var v = $("#thname").val() + " " + $("#tlname").val();
+                //alert(v);
+                $("#thface").html(v);
+
+            });
+
+            $("#uploadfile").click(function() {
+                //get the name of the image file
+                //alert("hi!");
+                var a = $("#filesToUpload").val();
+                //alert(a);
+                //if the extension of the file is other than jpeg or png, throw error
+                var n = a.lastIndexOf("\\");
+                //alert(n);
+                var s = a.substring(n + 1, a.length);
+                //alert(s);
+                var r = s.indexOf(".jpeg");
+                var p = s.indexOf(".png");
+                if (r == -1 && p == -1) {
+
+                    $("#displayerror").html("invalid file extension").show().css("color", "red");
+                }
+
+                //$("#displayerror").html("invalid file extension");
+
+                //convert image into base64 encoded format.
+                var file = document.getElementById('filesToUpload').files[0];
+                var reader = new FileReader();
+                var base64data = "";
+                reader.onloadend = function() {
+
+                    base64data = reader.result;
+                    console.log(base64data);
+
+                    // frame the data in json format. 
+                    var data = '{' +
+                        "Name:" +
+                        s + ", " +
+                        "Data:" +
+                        base64data + '}';
+                    console.log(data);
+                    //frame the ajax request
+                    $.ajax({
+                        url: "https://google.com", // Url to which the request is send
+                        type: "POST", // Type of request to be send, called as method
+                        data: data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                        contentType: "application/json", // The content type used when sending data to the server.
+                        cache: false, // To unable request pages to be cached
+                        processData: false, // To send DOMDocument or non processed data file it is set to false
+                        success: function(data) // A function to be called if request succeeds
+                            {
+                                alert(data);
+                            }
+                    });
+
+                }
+
+                reader.readAsDataURL(file);
+
+
+
+            });
+
+        });
+
+
+
+
+
+
+        // start of uploading picture module
+        function fileSelect(evt) {
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                var files = evt.target.files;
+
+                var result = '';
+                var file;
+                for (var i = 0; file = files[i]; i++) {
+                    // if the file is not an image, continue
+                    if (!file.type.match('image.*')) {
+                        continue;
+                    }
+
+                    reader = new FileReader();
+                    reader.onload = (function(tFile) {
+                        return function(evt) {
+                            var div = document.createElement('div');
+                            div.innerHTML = '<img style="width: 190px;height:100px" src="' + evt.target.result + '" />';
+                            document.getElementById('filesInfo').appendChild(div);
+                        };
+                    }(file));
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                alert('The File APIs are not fully supported in this browser.');
+            }
+        }
+
+        function fileSelect1(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                var files = evt.dataTransfer.files;
+
+                var result = '';
+                var file;
+                for (var i = 0; file = files[i]; i++) {
+                    result += '<li>' + file.name + ' ' + file.size + ' bytes</li>';
+                    reader = new FileReader();
+                    reader.onload = (function(tFile) {
+                        return function(evt) {
+                            var div = document.createElement('div');
+                            div.innerHTML = '<img style="width: 190px;height:100px" src="' + evt.target.result + '" />';
+                            document.getElementById('filesInfo').appendChild(div);
+                        };
+                    }(file));
+                    reader.readAsDataURL(file);
+                }
+                //document.getElementById('filesInfo').innerHTML = '<ul>' + result + '</ul>';
+            } else {
+                alert('The File APIs are not fully supported in this browser.');
+            }
+        }
+
+        function dragOver(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = 'copy';
+        }
+    </script>
+    
+    <style>
+        #container {
+            border-style: solid;
+            height: 100%;
+            width: 1200px;
+            margin: auto;
+            padding-left: 70px;
+            padding-right: 70px;
+        }
+        
+        .top {
+            border-style: hidden;
+            background-color: #336600;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-left: 50px;
+            margin-right: 15px;
+        }
+        
+        #about mason {
+            text-color: grey;
+            margin-left: 75px;
+            margin-right: 50px;
+            font-family: helvertica background-color: ;
+        }
+        /* Tooltip container */
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+            /* If you want dots under the hoverable text */
+        }
+        /* Tooltip text */
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 170px;
+            background-color: yellow;
+            color: black;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+            /* Position the tooltip text - see examples below! */
+            position: absolute;
+            z-index: 1;
+        }
+        /* Show the tooltip text when you mouse over the tooltip container */
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+        }
+        
+        #namediv {
+            border: none;
+            float: left;
+        }
+        
+        input[name="Fname"],
+        input[name="Mname"],
+        input[name="Lname"] {
+            float: left;
+        }
+        
+        #wrapper {
+            display: flex;
+        }
+        
+        #left {
+            flex: 0 0 65%;
+        }
+        
+        #right {
+            flex: 1;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+
+    <div id="container">
+        &nbsp
+
+
+        <div class="top ">
+            <div style="float:right; " class="tooltip">
+                <img src="black-logo.png " height="100px " ; width="250px " />
+                <span class="tooltiptext">Please visit <a href="http://www.gmu.edu"> http://www.gmu.edu</a> for more information</span>
+            </div>
+            <h1 style="margin-left:100px " ; "margin-right: 50px "; "float:top ";>
+                Face Recognition
+            </h1>
+        </div>
+        &nbsp
+
+
+        <div w3-include-html="registration.html"> </div>
+
+
+
+    </div>
+
+
+
+    <script>
+        includeHTML();
+    </script>
+    
+</body>
+
+</html>

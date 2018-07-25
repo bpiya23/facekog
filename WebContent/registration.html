@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https:/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="json2.js"></script>
+    <script type="text/javascript" src="json_parse.js"></script>
     <style>
         #namediv {
             border: none;
@@ -165,7 +167,8 @@
             });
 
             function showAlert(text) {
-                alert(text);
+                var data = JSON.parse(text);
+                alert(data);
             }
 
         });

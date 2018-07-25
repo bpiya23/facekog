@@ -146,11 +146,14 @@
                     //frame the ajax request
                     $.ajax({
                         type: "GET",
-                        url: "faceresponse.json",
+                        url: "zipcodeapi.com",
                         success: showAlert,
                         data: {
                             param1: "foo bar",
                             param2: "baz"
+                        },
+                        error: function(data) {
+                            alert(data);
                         },
 
                         cache: false,

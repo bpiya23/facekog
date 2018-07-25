@@ -152,10 +152,7 @@
                             param1: "foo bar",
                             param2: "baz"
                         },
-                        error: function(data) {
-                            alert(data);
-                        },
-
+                        error: showError,
                         cache: false,
                         dataType: "json"
 
@@ -171,6 +168,11 @@
 
             function showAlert(text) {
                 var data = JSON.parse(text);
+                alert(data);
+            }
+
+            function showError(data) {
+                //var data = JSON.parse(text);
                 alert(data);
             }
 

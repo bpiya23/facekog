@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-store" />
     <title>FaceKog-Registration</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https:/resources/demos/style.css">
@@ -115,7 +116,8 @@
                 //alert(s);
                 var r = s.indexOf(".jpeg");
                 var p = s.indexOf(".png");
-                if (r == -1 && p == -1) {
+                var s = s.indexOf(".jpg");
+                if (r == -1 && p == -1 && s == -1) {
 
                     $("#displayerror").html("invalid file extension").show().css("color", "red");
 
@@ -146,7 +148,7 @@
                     //frame the ajax request
                     $.ajax({
                         type: "GET",
-                        url: "zipcodeapi.com",
+                        url: "faceresponse.json",
                         success: showAlert,
                         data: {
                             param1: "foo bar",
@@ -167,8 +169,29 @@
             });
 
             function showAlert(text) {
-                var data = JSON.parse(text);
-                alert(data);
+                //console.log(text);
+                var strjson = JSON.stringify(text);
+                //console.log(strjson);
+                var data = jQuery.parseJSON(strjson);
+                //console.log(data);
+                addaBlock();
+                $.each(data, function(key, item) {
+                    //console.log(item.cropedData);
+
+                });
+            }
+            $("#newface").hide("1000");
+
+            function addaBlock() {
+                //$('#dynamicfaces').append('<h3>new faces</h3');
+                //var h3 = $("h3").text("new faces");
+
+                //console.log(h3);
+                //$("#uploadpicture").after(h3);
+
+                $("#newface").show("1000");
+                console.log("here");
+                var dynamicfaces = $("#dynamicfaces").text("here i am");
             }
 
             function showError(data) {
@@ -354,7 +377,7 @@
 
         <div id="accordion">
             <h3>Upload Picture</h3>
-            <div>
+            <div id="uploadpicture">
                 <form id="uploadFiles" enctype="multipart/form-data" method="post" action="upload.php">
                     <div class="row">
                         <div id="displayerror"></div>
@@ -366,9 +389,12 @@
                         <input type="button" value="Upload" id="uploadfile" />
                     </div>
                 </form>
-                <div id="dropTarget" style="width: 100%; height: 100px; border: 1px #ccc solid; padding: 10px;">Drop some files here</div>
+                <!--<div id="dropTarget" style="width: 100%; height: 100px; border: 1px #ccc solid; padding: 10px;">Drop some files here</div>-->
 
             </div>
+            <!--<div id="dynamicfaces"> <h3>Faces</h3> </div>-->
+            <h3 id="newface">new Faces</h3>
+            <div id="dynamicfaces"></div>
             <h3>Faces</h3>
             <div>
 
@@ -616,9 +642,9 @@
     <script type="text/javascript ">
         document.getElementById('filesToUpload').addEventListener('change', fileSelect, false);
 
-        var dropTarget = document.getElementById('dropTarget');
-        dropTarget.addEventListener('dragover', dragOver, false);
-        dropTarget.addEventListener('drop', fileSelect1, false);
+        //var dropTarget = document.getElementById('dropTarget');
+        //dropTarget.addEventListener('dragover', dragOver, false);
+        //dropTarget.addEventListener('drop', fileSelect1, false);
     </script>
 
 

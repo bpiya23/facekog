@@ -168,21 +168,24 @@
 
             });
 
+
             function showAlert(text) {
                 //console.log(text);
                 var strjson = JSON.stringify(text);
                 //console.log(strjson);
                 var data = jQuery.parseJSON(strjson);
                 //console.log(data);
-                addaBlock();
-                $.each(data, function(key, item) {
-                    //console.log(item.cropedData);
+                var counter = 0;
+                var facestr = "";
 
+                $.each(data, function(key, item) {
+                    facestr += addaBlock(item);
+                    var dynamicfaces = $("#dynamicfaces").html(facestr);
                 });
             }
             $("#newface").hide("1000");
 
-            function addaBlock() {
+            function addaBlock(item) {
                 //$('#dynamicfaces').append('<h3>new faces</h3');
                 //var h3 = $("h3").text("new faces");
 
@@ -191,7 +194,82 @@
 
                 $("#newface").show("1000");
                 console.log("here");
-                var dynamicfaces = $("#dynamicfaces").text("here i am");
+                var src = "data:image/jpeg;base64,";
+                src += item.cropedData;
+                var newImage = document.createElement('img');
+                newImage.src = src;
+                newImage.width = newImage.height = "80";
+                //document.querySelector('#imageContainer').innerHTML = newImage.outerHTML;
+                var str = '<div>' +
+
+                    '<div id="wrapper">' +
+                    '    <label id="left" for="face1"><b><div id="fface">' + item.faceCounter + ' Face:</div></b></label><br/>' +
+                    '    <div id="right">' + newImage.outerHTML + '</div>' +
+                    '</div>' +
+                    '<br/><br/>' +
+                    '<div id="namediv">' +
+                    '    <label for="firstname"><b>First Name:</b><span style="color:red">*</span></label><br/>' +
+                    '    <input type="text" name="' + item.referenceId + 'fname" id="' + item.referenceId + 'fname" />' +
+
+                    '</div>' +
+                    '<div id="namediv">' +
+                    '    <label for="Middle Name"><b>Middle Name:</b><span style="color:red">*</span></label><br/>' +
+                    '    <input type="text" name="' + item.referenceId + 'Mname" id="' + item.referenceId + 'Mname" />' +
+                    '</div>' +
+                    '<div id="namediv">' +
+                    '    <label for="last name"><b>Last Name:</b><span style="color:red">*</span></strong><br/>' +
+                    '<input type="text" name="' + item.referenceId + 'lname" id="' + item.referenceId + 'lname"/>' +
+                    '</div>' +
+
+                    '<div><br/><br/><br/>' +
+                    '<div id="namediv">' +
+                    '<label for="StreetAddress1"><b>Street Address 1:</b><span style="color:red">*</span></label><br/>' +
+                    '   <input type="text" name="' + item.referenceId + 'StreetAddress1" id="' + item.referenceId + 'StreetAddress1" />' +
+
+                    '</div>' +
+                    '<div id="namediv">' +
+                    '    <label for="StreetAddress2"><b>Street Address 2:</b><span style="color:red">*</span></label><br/>' +
+                    '    <input type="text" name="' + item.referenceId + 'StreetAddress2" id="' + item.referenceId + 'StreetAddress2" />' +
+                    '</div>' +
+
+                    '</div>' +
+                    '<div><br/><br/><br/>' +
+
+                    '   <div id="namediv">' +
+                    '       <label for="zipcode"><b>Zip Code:</b><span style="color:red">*</span></label><br/>' +
+                    '       <input type="text" name="' + item.referenceId + 'zip" id="' + item.referenceId + 'zip" />' +
+                    '       <br/>' +
+                    '       <span id="validateZip " class="validator "> </span>' +
+                    '   </div>' +
+                    '   <div id="namediv">' +
+                    '       <label for="city"><b>City:</b></label><br/>' +
+                    '       <input type="text" name="' + item.referenceId + 'city" id="' + item.referenceId + 'city" />' +
+                    '   </div>' +
+                    '   <div id="namediv">' +
+                    '       <label for="state"><b>State:</b></label><br/>' +
+                    '       <input type="text" name="' + item.referenceId + 'state" id="' + item.referenceId + 'state" />' +
+                    '   </div>' +
+
+                    '</div>' +
+
+                    ' <div><br/><br/><br/>' +
+                    '   <div id="namediv">' +
+                    '       <label for="telephone"><b>Telephone:</b><span style="color:red">*</span></label><br/>' +
+                    '       <input type="tel " name="' + item.referenceId + 'phone " id="' + item.referenceId + 'phone " placeholder="(###) ###-####" pattern="\(\d{3}\)+\d{3}-\d{4}" required/>' +
+                    '       <br/>' +
+                    '       <span id="validateZip " class="validator "> </span>' +
+                    '   </div>' +
+                    '   <div id="namediv">' +
+                    '       <label for="email"><b>Email:</b></label><br/>' +
+                    '       <input type="email " name="' + item.referenceId + 'email " id="' + item.referenceId + 'email " placeholder="name@domain.com" required/>' +
+                    '   </div>' +
+
+                    '</div>' +
+
+
+                    '</div><br/><br/><br/><br/>';
+                return str;
+
             }
 
             function showError(data) {
@@ -395,231 +473,9 @@
             <!--<div id="dynamicfaces"> <h3>Faces</h3> </div>-->
             <h3 id="newface">new Faces</h3>
             <div id="dynamicfaces"></div>
-            <h3>Faces</h3>
-            <div>
 
-                <div id="wrapper">
-                    <label id="left" for="face1"><b><div id="fface">First Face:</div></b></label><br/>
-                    <div id="right"><img src="" width="100px" height="100px"></div>
-                </div>
-                <br/><br/>
-                <div id="namediv">
-                    <label for="firstname"><b>First Name:</b><span style='color:red'>*</span></label><br/>
-                    <input type='text' name='fname' id='fname' />
-
-                </div>
-                <div id="namediv">
-                    <label for="Middle Name"><b>Middle Name:</b><span style='color:red',>*</span></label><br/>
-                    <input type='text' name='Mname' id='Mname' />
-                </div>
-                <div id="namediv">
-                    <label for="last name"><b>Last Name:</b><span style='color:red'>*</span></strong><br/>
-                <input type='text' name='lname' id='lname'/>
-            </div>
-                
-                <div><br/><br/><br/>
-            <div id="namediv">
-                <label for="StreetAddress1"><b>Street Address 1:</b><span style='color:red'>*</span></label><br/>
-                    <input type='text' name='StreetAddress1' id='StreetAddress1' />
-
-                </div>
-                <div id="namediv">
-                    <label for="StreetAddress2"><b>Street Address 2:</b><span style='color:red'>*</span></label><br/>
-                    <input type='text' name='StreetAddress2' id='StreetAddress2' />
-                </div>
-
-            </div>
-            <div><br/><br/><br/>
-
-                <div id="namediv">
-                    <label for="zipcode"><b>Zip Code:</b><span style='color:red'>*</span></label><br/>
-                    <input type='text' name='zip' id='zip' />
-                    <br/>
-                    <span id="validateZip " class="validator "> </span>
-                </div>
-                <div id="namediv">
-                    <label for="city"><b>City:</b></label><br/>
-                    <input type='text' name='city' id='city' />
-                </div>
-                <div id="namediv">
-                    <label for="state"><b>State:</b></label><br/>
-                    <input type='text' name='state' id='state' />
-                </div>
-
-            </div>
-
-            <div><br/><br/><br/>
-                <div id="namediv">
-                    <label for="telephone"><b>Telephone:</b><span style='color:red'>*</span></label><br/>
-                    <input type="tel " name="phone " id="phone " placeholder="(###) ###-####" pattern="\(\d{3}\)+\d{3}-\d{4}" required/>
-                    <br/>
-                    <span id="validateZip " class="validator "> </span>
-                </div>
-                <div id="namediv">
-                    <label for="email"><b>Email:</b></label><br/>
-                    <input type="email " name="email " id="email " placeholder="name@domain.com" required/>
-                </div>
-
-            </div>
-
-            <br/>
-            <br/>
-
-            <br/>
-            <br/>
-
-            <div id="wrapper">
-
-                <label id="left" for="face"><b><div id="sface">Second Face:</div></b></label><br/>
-                <div id="right"><img src="" width="100px" height="100px"></div>
-            </div>
-            <br/><br/>
-            <div id="namediv">
-                <label for="firstname"><b>First Name:</b><span style='color:red'>*</span></label><br/>
-                <input type='text' name='sname' id='sname' />
-
-            </div>
-            <div id="namediv">
-                <label for="Middle Name"><b>Middle Name:</b><span style='color:red',>*</span></label><br/>
-                <input type='text' name='Mname' id='Mname' />
-            </div>
-            <div id="namediv">
-                <label for="last name"><b>Last Name:</b><span style='color:red'>*</span></strong><br/>
-                <input type='text' name='slname' id='slname'/>
-            </div>
-                
-
- <div><br/><br/><br/>
-            <div id="namediv">
-                <label for="StreetAddress1"><b>Street Address 1:</b><span style='color:red'>*</span></label><br/>
-                <input type='text' name='StreetAddress1' id='StreetAddress1' />
-
-            </div>
-            <div id="namediv">
-                <label for="StreetAddress2"><b>Street Address 2:</b><span style='color:red'>*</span></label><br/>
-                <input type='text' name='StreetAddress2' id='StreetAddress2' />
-            </div>
 
         </div>
-        <div><br/><br/><br/>
-
-            <div id="namediv">
-                <label for="zipcode"><b>Zip Code:</b><span style='color:red'>*</span></label><br/>
-                <input type='text' name='zip' id='zip' />
-                <br/>
-                <span id="validateZip " class="validator "> </span>
-            </div>
-            <div id="namediv">
-                <label for="city"><b>City:</b></label><br/>
-                <input type='text' name='city' id='city' />
-            </div>
-            <div id="namediv">
-                <label for="state"><b>State:</b></label><br/>
-                <input type='text' name='state' id='state' />
-            </div>
-
-        </div>
-
-
-        <div><br/><br/><br/>
-            <div id="namediv">
-                <label for="telephone"><b>Telephone:</b><span style='color:red'>*</span></label><br/>
-                <input type="tel " name="phone " id="phone " placeholder="(###) ###-####" pattern="\(\d{3}\)+\d{3}-\d{4}" required/>
-                <br/>
-                <span id="validateZip " class="validator "> </span>
-            </div>
-            <div id="namediv">
-                <label for="email"><b>Email:</b></label><br/>
-                <input type="email " name="email " id="email " placeholder="name@domain.com" required/>
-            </div>
-
-        </div>
-
-        <br/>
-        <br/>
-        <br/><br/>
-
-        <div id="wrapper">
-
-            <label id="left" for="face"><b><div id="thface">Third Face:</div></b></label><br/>
-            <div id="right"><img src="" width="100px" height="100px"></div>
-        </div>
-        <br/><br/>
-        <div id="namediv">
-            <label for="firstname"><b>First Name:</b><span style='color:red'>*</span></label><br/>
-            <input type='text' name='thname' id='thname' />
-
-        </div>
-        <div id="namediv">
-            <label for="Middle Name"><b>Middle Name:</b><span style='color:red',>*</span></label><br/>
-            <input type='text' name='Mname' id='Mname' />
-        </div>
-        <div id="namediv">
-            <label for="last name"><b>Last Name:</b><span style='color:red'>*</span></strong><br/>
-                <input type='text' name='tlname' id='tlname'/>
-            </div>
-
-    <div><br/><br/><br/>
-        <div id="namediv">
-            <label for="StreetAddress1"><b>Street Address 1:</b><span style='color:red'>*</span></label><br/>
-            <input type='text' name='StreetAddress1' id='StreetAddress1' />
-
-        </div>
-        <div id="namediv">
-            <label for="StreetAddress2"><b>Street Address 2:</b><span style='color:red'>*</span></label><br/>
-            <input type='text' name='StreetAddress2' id='StreetAddress2' />
-        </div>
-
-    </div>
-
-
-    <div><br/><br/><br/>
-
-        <div id="namediv">
-            <label for="zipcode"><b>Zip Code:</b><span style='color:red'>*</span></label><br/>
-            <input type='text' name='zip' id='zip' />
-            <br/>
-            <span id="validateZip " class="validator "> </span>
-        </div>
-        <div id="namediv">
-            <label for="city"><b>City:</b></label><br/>
-            <input type='text' name='city' id='city' />
-        </div>
-        <div id="namediv">
-            <label for="state"><b>State:</b></label><br/>
-            <input type='text' name='state' id='state' />
-        </div>
-
-    </div>
-
-
-    <div><br/><br/><br/>
-        <div id="namediv">
-            <label for="telephone"><b>Telephone:</b><span style='color:red'>*</span></label><br/>
-            <input type="tel " name="phone " id="phone " placeholder="(###) ###-####" pattern="\(\d{3}\)+\d{3}-\d{4}" required/>
-            <br/>
-            <span id="validateZip " class="validator "> </span>
-        </div>
-        <div id="namediv">
-            <label for="email"><b>Email:</b></label><br/>
-            <input type="email " name="email " id="email " placeholder="name@domain.com" required/>
-        </div>
-
-    </div>
-
-    <br/>
-    <br/>
-
-
-
-    </div>
-
-
-
-
-
-
-
 
     </div>
     <br/>

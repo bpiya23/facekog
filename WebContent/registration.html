@@ -203,13 +203,13 @@
                 var str = '<div>' +
 
                     '<div id="wrapper">' +
-                    '    <label id="left" for="face1"><b><div id="fface">' + item.faceCounter + ' Face:</div></b></label><br/>' +
+                    '    <label id="left" for="face1"><b><div id="' + item.referenceId + 'fface">' + item.faceCounter + ' Face:</div></b></label><br/>' +
                     '    <div id="right">' + newImage.outerHTML + '</div>' +
                     '</div>' +
                     '<br/><br/>' +
                     '<div id="namediv">' +
                     '    <label for="firstname"><b>First Name:</b><span style="color:red">*</span></label><br/>' +
-                    '    <input type="text" name="' + item.referenceId + 'fname" id="' + item.referenceId + 'fname" />' +
+                    '    <input type="text" name="' + item.referenceId + 'fname" id="' + item.referenceId + 'fname" onkeyUp="changefaceLabel(\'' + item.referenceId + '\');"/>' +
 
                     '</div>' +
                     '<div id="namediv">' +
@@ -218,7 +218,7 @@
                     '</div>' +
                     '<div id="namediv">' +
                     '    <label for="last name"><b>Last Name:</b><span style="color:red">*</span></strong><br/>' +
-                    '<input type="text" name="' + item.referenceId + 'lname" id="' + item.referenceId + 'lname"/>' +
+                    '<input type="text" name="' + item.referenceId + 'lname" id="' + item.referenceId + 'lname" onkeyUp="changefaceLabel(\'' + item.referenceId + '\');"/>' +
                     '</div>' +
 
                     '<div><br/><br/><br/>' +
@@ -268,9 +268,15 @@
 
 
                     '</div><br/><br/><br/><br/>';
+
+
+
                 return str;
 
             }
+
+
+
 
             function showError(data) {
                 //var data = JSON.parse(text);
@@ -281,7 +287,17 @@
 
 
 
+        function changefaceLabel(referenceId) {
+            //alert("hi");
+            //$("#fface").html($("#fname").val());
 
+            var v = $("#" + referenceId + "fname").val() + " " +
+                $("#" + referenceId + "fname").val();
+            //alert(v);
+            $("#" + referenceId + "fface").html(v);
+
+        }
+        i
 
 
         // start of uploading picture module
@@ -471,7 +487,7 @@
 
             </div>
             <!--<div id="dynamicfaces"> <h3>Faces</h3> </div>-->
-            <h3 id="newface">new Faces</h3>
+            <h3 id="newface">Register Faces</h3>
             <div id="dynamicfaces"></div>
 
 

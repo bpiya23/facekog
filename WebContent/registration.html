@@ -88,6 +88,7 @@
                 //alert("hi");
                 $("#thface").html($("#thname").val());
 
+
                 var v = $("#thname").val() + " " + $("#tlname").val();
                 //alert(v);
                 $("#thface").html(v);
@@ -122,8 +123,10 @@
                     $("#displayerror").html("invalid file extension").show().css("color", "red");
 
 
-
                 }
+                $("#filesToUpload").click(function() {
+                    $("#displayerror").html("invalid file extension").hide();
+                });
 
 
 
@@ -178,19 +181,20 @@
                 var counter = 0;
                 var facestr = "";
 
+
                 $.each(data, function(key, item) {
-                    facestr += addaBlock(item);
-                    var dynamicfaces = $("#dynamicfaces").html(facestr);
+                    console.log(item);
+                    facestr = facestr + addaBlock(item);
                 });
+
+
+                facestr += '<input type="submit" value="submit" />';
+                var dynamicfaces = $("#dynamicfaces").html(facestr);
             }
+
             $("#newface").hide("1000");
 
             function addaBlock(item) {
-                //$('#dynamicfaces').append('<h3>new faces</h3');
-                //var h3 = $("h3").text("new faces");
-
-                //console.log(h3);
-                //$("#uploadpicture").after(h3);
 
                 $("#newface").show("1000");
                 console.log("here");
@@ -205,6 +209,16 @@
                     '<div id="wrapper">' +
                     '    <label id="left" for="face1"><b><div id="' + item.referenceId + 'fface">' + item.faceCounter + ' Face:</div></b></label><br/>' +
                     '    <div id="right">' + newImage.outerHTML + '</div>' +
+                    '<div>' +
+                    '<input type="checkbox"  name="Exclude Me"  value="check_item.referenceId" />' +
+                    '<label for="text">Exclude Me</label>' +
+                    '<br/>' +
+
+                    '<input type="radio"  name=" Me"  value="acb" />' +
+                    '<label for="text">Its Me</label>' +
+                    ' </div>' +
+
+
                     '</div>' +
                     '<br/><br/>' +
                     '<div id="namediv">' +
@@ -312,14 +326,18 @@
                     if (!file.type.match('image.*')) {
                         continue;
                     }
-
+                    document.getElementById('filesInfo').innerHTML = "";
                     reader = new FileReader();
                     reader.onload = (function(tFile) {
                         return function(evt) {
                             var div = document.createElement('div');
                             div.innerHTML = '<img style="width: 190px;height:100px" src="' + evt.target.result + '" />';
                             document.getElementById('filesInfo').appendChild(div);
+
+
                         };
+
+
                     }(file));
                     reader.readAsDataURL(file);
                 }
@@ -493,23 +511,24 @@
 
         </div>
 
-    </div>
-    <br/>
 
-    <div class="lpart">
-        <div>
-            <a href="resume_ Web Developer.doc" style="margin-left:20px; padding-bottom:30px;">About</a> &nbsp |
-            <a href="mailto:bpiya23@gmail.com" style="margin-left:20px; padding-bottom:30px;"> Contact</a>
+        <br/>
+
+        <div class="lpart">
+            <div>
+                <a href="resume_ Web Developer.doc" style="margin-left:20px; padding-bottom:30px;">About</a> &nbsp |
+                <a href="mailto:bpiya23@gmail.com" style="margin-left:20px; padding-bottom:30px;"> Contact</a>
+            </div>
+            <div style="float:right; width: 20%; margin-right:15px; padding-top:20px; padding-bottom:30px;">
+
+                <img src="facebook-logo.png " alt=" " height="40px " , width="40px " /> &nbsp
+                <img src="twitter-logo.png " height="40px " , width="40px " />&nbsp
+                <img src="images-mail.png " height="40px " , width="40px " />
+            </div>
         </div>
-        <div style="float:right; width: 20%; margin-right:15px; padding-top:20px; padding-bottom:30px;">
 
-            <img src="facebook-logo.png " alt=" " height="40px " , width="40px " /> &nbsp
-            <img src="twitter-logo.png " height="40px " , width="40px " />&nbsp
-            <img src="images-mail.png " height="40px " , width="40px " />
-        </div>
+        <br/>
     </div>
-
-    <br/>
     </div>
     <script type="text/javascript ">
         document.getElementById('filesToUpload').addEventListener('change', fileSelect, false);
